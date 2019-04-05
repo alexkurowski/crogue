@@ -4,7 +4,8 @@ class Model
     world : World
 
   def initialize
-    Event.subscribe :input_keypress, Event::Keypress, keypress
+    Event.subscribe :input_keypress,
+      { keypress: Event::Keypress }
 
     @ecs = ECS.new
     @world = World.new

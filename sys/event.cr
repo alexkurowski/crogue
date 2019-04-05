@@ -11,12 +11,14 @@ module Event
   @@subscriptions : Hash(Symbol, Hash(Int32, EventCallback)) =
     Hash(Symbol, Hash(Int32, EventCallback)).new
 
-  macro subscribe(event, type, fn)
+  macro subscribe(event, callbacks)
     Event._subscribe {{event}},
       -> (e : BaseEvent) {
-        if e.is_a? {{type}}
-          {{fn}} e
-        end
+        {% for fn, type in callbacks %}
+          if e.is_a? {{type}}
+            {{fn.id}} e
+          end
+        {% end %}
       }
   end
 
