@@ -2,7 +2,7 @@ abstract class BaseComponent
 end
 
 alias Entity = Int32
-alias Components = Hash(Symbol, BaseComponent)
+alias Components = Hash(Symbol, BaseComponent | Bool)
 
 class ECS
   getter \
@@ -20,9 +20,22 @@ class ECS
     entity = @entity_counter
     @entity_counter += 1
 
+    @entities.push entity
     @components[entity] = components
 
     Event.trigger :entity_spawn, Event::Entity.new(entity)
     return entity
+  end
+
+  def find_with(key : Symbol) : Int32 | Nil
+    @entities.find do |e|
+      @components[e].has_key? key
+    end
+  end
+
+  def find_all_with(key : Symbol) : Array(Int32)
+    @entities.select do |e|
+      @components[e].has_key? key
+    end
   end
 end
