@@ -1,0 +1,13 @@
+name: rl
+version: 0.1.0
+
+authors:
+  - Alex <kurowski.dev@gmail.com>
+
+targets:
+  game:
+    main: src/main.cr
+
+crystal: 0.27.2
+
+license: MIT
