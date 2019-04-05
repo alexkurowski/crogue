@@ -15,8 +15,6 @@ class Core
       position: Component::Position.new(0, 0),
       character: Component::Character.new('@'),
     }.to_h)
-
-    p player
   end
 
   def loop

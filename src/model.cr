@@ -4,7 +4,7 @@ class Model
     world : World
 
   def initialize
-    Event.subscribe :keypress, keypress
+    Event.subscribe :input_keypress, Event::Keypress, keypress
 
     @ecs = ECS.new
     @world = World.new
@@ -13,7 +13,8 @@ class Model
   def update
   end
 
-  def keypress(e : KeypressEvent)
+  def keypress(e : Event::Keypress)
+    p e.key
     # case e.key
     # when BLT::TK::H
     #   @player_x -= 1

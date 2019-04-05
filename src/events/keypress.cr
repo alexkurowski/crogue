@@ -1,4 +1,7 @@
-class KeypressEvent < BaseEvent
-  property :key
-  def initialize(@key : BLT::TK); end
+class Event::Keypress < BaseEvent
+  getter \
+    key : BLT::TK
+
+  def initialize(@key)
+  end
 end

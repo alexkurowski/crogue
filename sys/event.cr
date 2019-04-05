@@ -1,4 +1,5 @@
-abstract class BaseEvent; end
+abstract class BaseEvent
+end
 
 alias EventCallback = Proc(BaseEvent, Nil)
 
@@ -10,10 +11,12 @@ module Event
   @@subscriptions : Hash(Symbol, Hash(Int32, EventCallback)) =
     Hash(Symbol, Hash(Int32, EventCallback)).new
 
-  macro subscribe(event, fn)
+  macro subscribe(event, type, fn)
     Event._subscribe {{event}},
       -> (e : BaseEvent) {
-        {{fn}} e
+        if e.is_a? {{type}}
+          {{fn}} e
+        end
       }
   end
 
@@ -31,6 +34,8 @@ module Event
   end
 
   def trigger(event : Symbol, data : BaseEvent)
-    @@subscriptions[event].each_value &.call(data)
+    if @@subscriptions.has_key? event
+      @@subscriptions[event].each_value &.call(data)
+    end
   end
 end

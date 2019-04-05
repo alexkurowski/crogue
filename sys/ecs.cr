@@ -1,6 +1,5 @@
-module Component; end
-
-abstract class BaseComponent; end
+abstract class BaseComponent
+end
 
 alias Entity = Int32
 alias Components = Hash(Symbol, BaseComponent)
@@ -23,6 +22,7 @@ class ECS
 
     @components[entity] = components
 
+    Event.trigger :entity_spawn, Event::Entity.new(entity)
     return entity
   end
 end
