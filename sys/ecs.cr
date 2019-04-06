@@ -1,19 +1,28 @@
 abstract class BaseComponent
 end
 
+abstract class BaseSystem
+end
+
 alias Entity = Int32
 alias Components = Hash(Symbol, BaseComponent | Bool)
 
 class ECS
   getter \
     entities : Array(Entity),
-    components : Hash(Entity, Components)
+    components : Hash(Entity, Components),
+    systems : Array(BaseSystem)
 
   def initialize
     @entities = [] of Entity
     @components = {} of Entity => Components
+    @systems = [] of BaseSystem
 
     @entity_counter = 0
+  end
+
+  def register(system : BaseSystem)
+    @systems.push system
   end
 
   def spawn(components : Components) : Int32
@@ -36,6 +45,12 @@ class ECS
   def find_all_with(key : Symbol) : Array(Int32)
     @entities.select do |e|
       @components[e].has_key? key
+    end
+  end
+
+  def each_entity(&block)
+    @entities.each do |e|
+      yield @components[e]
     end
   end
 end

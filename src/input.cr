@@ -6,7 +6,7 @@ class Input
         Game.quit!
       else
         Event.trigger :input_keypress,
-          Event::Keypress.new(input)
+          Event::Input.new(input)
       end
     end
   end

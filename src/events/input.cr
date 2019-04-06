@@ -1,4 +1,4 @@
-class Event::Keypress < BaseEvent
+class Event::Input < BaseEvent
   getter \
     key : BLT::TK
 

@@ -1,4 +1,4 @@
-class Component::Character < BaseComponent
+class Component::Sprite < BaseComponent
   property \
     char : Char
 
