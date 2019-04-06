@@ -5,6 +5,7 @@ abstract class BaseSystem
 end
 
 alias Entity = Int32
+
 alias ComponentType = BaseComponent | Bool
 
 class Components < Hash(Symbol, ComponentType)

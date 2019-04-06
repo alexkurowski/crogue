@@ -4,7 +4,7 @@ require "./**"
 
 Game = Core.new
 
-if run?
+unless test?
   Terminal.open
   Game.start
   Game.loop

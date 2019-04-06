@@ -1,5 +1,5 @@
 Environment = ENV.fetch("ENV") { "development" }
 
-def run?
-  Environment != "test"
+def test?
+  Environment == "test"
 end
