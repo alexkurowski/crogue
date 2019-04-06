@@ -5,10 +5,10 @@ class System::Keypress < BaseSystem
   end
 
   def execute(input : Event::Input)
-    player = Game.model.ecs.find_with :player
+    player = Game.model.ecs.find :player
     return unless player
 
-    position = Game.model.ecs.components[player].get_position
+    position = player.get_position
 
     case input.key
     when BLT::TK::H

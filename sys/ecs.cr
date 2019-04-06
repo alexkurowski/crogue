@@ -52,19 +52,30 @@ class ECS
     return entity
   end
 
-  def find_with(key : Symbol) : Int32 | Nil
+  def find(key : Symbol) : Components | Nil
+    entity = @entities.find do |e|
+      @components[e].has_key? key
+    end
+    @components[entity]
+  end
+
+  def find_index(key : Symbol) : Int32 | Nil
     @entities.find do |e|
       @components[e].has_key? key
     end
   end
 
-  def find_all_with(key : Symbol) : Array(Int32)
-    @entities.select do |e|
-      @components[e].has_key? key
-    end
+  def find_all(key : Symbol) : Array(Components)
+    @entities
+      .select do |e|
+        @components[e].has_key? key
+      end
+      .map do |e|
+        @components[e]
+      end
   end
 
-  def each_entity(*components, &block)
+  def each(*components, &block)
     @entities.each do |e|
       if has_every_component? e, components
         yield @components[e]

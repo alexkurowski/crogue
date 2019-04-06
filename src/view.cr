@@ -13,7 +13,7 @@ class View
   end
 
   private def draw_entities
-    Game.model.ecs.each_entity(:position, :sprite) do |components|
+    Game.model.ecs.each :position, :sprite do |components|
       position = components.get_position
       sprite = components.get_sprite
 
