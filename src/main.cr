@@ -4,8 +4,10 @@ require "./**"
 
 Game = Core.new
 
-Terminal.open
-Game.start
-Game.loop
-Game.finish
-Terminal.close
+if run?
+  Terminal.open
+  Game.start
+  Game.loop
+  Game.finish
+  Terminal.close
+end

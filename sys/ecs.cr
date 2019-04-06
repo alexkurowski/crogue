@@ -5,17 +5,18 @@ abstract class BaseSystem
 end
 
 alias Entity = Int32
-alias Components = Hash(Symbol, BaseComponent | Bool)
+alias ComponentType = BaseComponent | Bool
+alias ComponentSet = Hash(Symbol, ComponentType)
 
 class ECS
   getter \
     entities : Array(Entity),
-    components : Hash(Entity, Components),
+    components : Hash(Entity, ComponentSet),
     systems : Array(BaseSystem)
 
   def initialize
     @entities = [] of Entity
-    @components = {} of Entity => Components
+    @components = {} of Entity => ComponentSet
     @systems = [] of BaseSystem
 
     @entity_counter = 0
@@ -25,7 +26,12 @@ class ECS
     @systems.push system
   end
 
-  def spawn(components : Components) : Int32
+  def spawn(**prototype) : Int32
+    components : ComponentSet = {} of Symbol => ComponentType
+    prototype.each do |key, value|
+      components[key] = value.as(ComponentType)
+    end
+
     entity = @entity_counter
     @entity_counter += 1
 

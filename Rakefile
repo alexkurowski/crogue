@@ -7,3 +7,7 @@ end
 task :run do
   sh "shards build && bin/game"
 end
+
+task :test do
+  sh "ENV=test crystal spec"
+end
