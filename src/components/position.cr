@@ -6,3 +6,5 @@ class Component::Position < BaseComponent
   def initialize(@x = 0, @y = 0)
   end
 end
+
+Components.register Position

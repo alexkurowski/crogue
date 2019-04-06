@@ -8,7 +8,7 @@ class System::Keypress < BaseSystem
     player = Game.model.ecs.find_with :player
     return unless player
 
-    position = Game.model.ecs.components[player][:position].as Component::Position
+    position = Game.model.ecs.components[player].get_position
 
     case input.key
     when BLT::TK::H

@@ -14,8 +14,8 @@ class View
 
   private def draw_entities
     Game.model.ecs.each_entity(:position, :sprite) do |components|
-      position = components[:position].as Component::Position
-      sprite = components[:sprite].as Component::Sprite
+      position = components.get_position
+      sprite = components.get_sprite
 
       Terminal.put position.x, position.y, sprite.char
     end

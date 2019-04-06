@@ -6,17 +6,27 @@ end
 
 alias Entity = Int32
 alias ComponentType = BaseComponent | Bool
-alias ComponentSet = Hash(Symbol, ComponentType)
+
+class Components < Hash(Symbol, ComponentType)
+  macro register(class_name)
+    {% id = class_name.symbolize.underscore.id %}
+    class Components
+      def get_{{id}}
+        self[:{{id}}].as(Component::{{class_name}})
+      end
+    end
+  end
+end
 
 class ECS
   getter \
     entities : Array(Entity),
-    components : Hash(Entity, ComponentSet),
+    components : Hash(Entity, Components),
     systems : Array(BaseSystem)
 
   def initialize
     @entities = [] of Entity
-    @components = {} of Entity => ComponentSet
+    @components = {} of Entity => Components
     @systems = [] of BaseSystem
 
     @entity_counter = 0
@@ -27,7 +37,7 @@ class ECS
   end
 
   def spawn(**prototype) : Int32
-    components : ComponentSet = {} of Symbol => ComponentType
+    components = Components.new
     prototype.each do |key, value|
       components[key] = value.as(ComponentType)
     end

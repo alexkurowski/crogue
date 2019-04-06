@@ -34,4 +34,12 @@ describe ECS do
     end
     iter_count.should eq 1
   end
+
+  it "can retrieve typed component" do
+    ecs = ECS.new
+    entity = ecs.spawn(position: Component::Position.new)
+    components = ecs.components[entity]
+
+    components.get_position.should be_a Component::Position
+  end
 end

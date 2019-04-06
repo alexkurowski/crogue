@@ -5,3 +5,5 @@ class Component::Sprite < BaseComponent
   def initialize(@char)
   end
 end
+
+Components.register Sprite
