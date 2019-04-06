@@ -48,9 +48,18 @@ class ECS
     end
   end
 
-  def each_entity(&block)
+  def each_entity(*components, &block)
     @entities.each do |e|
-      yield @components[e]
+      if has_every_component? e, components
+        yield @components[e]
+      end
     end
+  end
+
+  private def has_every_component?(e : Entity, components : Tuple)
+    components.each do |component|
+      return false unless @components[e].has_key? component
+    end
+    true
   end
 end

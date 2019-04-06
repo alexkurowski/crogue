@@ -16,6 +16,11 @@ class Model
       position: Component::Position.new(0, 0),
       sprite: Component::Sprite.new('@'),
     }.to_h)
+
+    @ecs.spawn({
+      player: true,
+      position: Component::Position.new(10, 0).as(BaseComponent),
+    }.to_h)
   end
 
   def update

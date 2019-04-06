@@ -27,7 +27,12 @@ module Event
   # Event.trigger :event_type, Event::Example.new
   # ```
   macro subscribe(event, callback)
-    {% if callback.is_a? NamedTupleLiteral %}
+    {% if callback.is_a? Call %}
+      Event._subscribe {{event}},
+        -> (e : BaseEvent) {
+          {{callback}}
+        }
+    {% elsif callback.is_a? NamedTupleLiteral %}
       Event._subscribe {{event}},
         -> (e : BaseEvent) {
           {% for fn, type in callback %}
@@ -35,11 +40,6 @@ module Event
               {{fn.id}} e
             end
           {% end %}
-        }
-    {% elsif callback.is_a? Call %}
-      Event._subscribe {{event}},
-        -> (e : BaseEvent) {
-          {{callback}}
         }
     {% end %}
   end

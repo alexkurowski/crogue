@@ -5,8 +5,7 @@ class Input
       when BLT::TK::CLOSE
         Game.quit!
       else
-        Event.trigger :input_keypress,
-          Event::Input.new(input)
+        Event.trigger :input_keypress, Event::Input.new(input)
       end
     end
   end
