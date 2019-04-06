@@ -1,4 +1,5 @@
 require "../sys/**"
+require "../config/**"
 require "./**"
 
 Game = Core.new
