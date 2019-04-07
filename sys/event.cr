@@ -52,6 +52,13 @@ module Event
         -> (e : BaseEvent) {
           {{callback}}
         }
+    {% elsif callback.is_a? TypeDeclaration %}
+      Event._subscribe {{event}},
+        -> (e : BaseEvent) {
+          if e.is_a? {{callback.type}}
+            {{callback.var}} e
+          end
+        }
     {% elsif callback.is_a? NamedTupleLiteral %}
       Event._subscribe {{event}},
         -> (e : BaseEvent) {
@@ -62,6 +69,45 @@ module Event
           {% end %}
         }
     {% end %}
+  end
+
+  # Same as above, but allows to match event name with method name
+  # ```
+  # def callback
+  #   p "Callback is called"
+  # end
+  #
+  # Event.subscribe callback
+  #
+  # Event.trigger :callback
+  # ```
+  macro subscribe(callback)
+    {% if callback.is_a? Call %}
+      Event._subscribe :{{callback}},
+        -> (e : BaseEvent) {
+          {{callback}}
+        }
+    {% elsif callback.is_a? SymbolLiteral %}
+      Event._subscribe {{callback}},
+        -> (e : BaseEvent) {
+          {{callback.id}}
+        }
+    {% elsif callback.is_a? TypeDeclaration %}
+      Event._subscribe :{{callback.var}},
+        -> (e : BaseEvent) {
+          if e.is_a? {{callback.type}}
+            {{callback.var}} e
+          end
+        }
+    {% end %}
+  end
+
+  macro test(x)
+    {% p x %}
+    {% p x.var %}
+    {% p x.value %}
+    {% p x.type %}
+    {% p x.class_name %}
   end
 
   def _subscribe(event : Symbol, callback : EventCallback) : Int32
@@ -77,7 +123,7 @@ module Event
     @@subscriptions[event].delete id
   end
 
-  def trigger(event : Symbol, data : BaseEvent)
+  def trigger(event : Symbol, data : BaseEvent = Event::Empty.new)
     if @@subscriptions.has_key? event
       @@subscriptions[event].each_value &.call(data)
     end

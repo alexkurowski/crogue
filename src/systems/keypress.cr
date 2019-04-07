@@ -1,7 +1,6 @@
 class System::Keypress < BaseSystem
   def initialize
-    Event.subscribe :input_keypress,
-      { execute: Event::Input }
+    Event.subscribe :input_keypress, execute : Event::Input
   end
 
   def execute(input : Event::Input)
