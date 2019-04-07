@@ -1,3 +1,4 @@
+# TODO: A macro that can define an Enum?
 # define_event_types \
 #   :input_keypress,
 #   :entity_spawn

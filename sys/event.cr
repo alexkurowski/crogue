@@ -48,11 +48,19 @@ module Event
   # ```
   macro subscribe(event, callback)
     {% if callback.is_a? Call %}
+      # Event.subscribe(:some_event_name, callback)
       Event._subscribe {{event}},
         -> (e : BaseEvent) {
           {{callback}}
         }
+    {% elsif callback.is_a? SymbolLiteral %}
+      # Event.subscribe(:some_event_name, :callback)
+      Event._subscribe {{event}},
+        -> (e : BaseEvent) {
+          {{callback.id}}
+        }
     {% elsif callback.is_a? TypeDeclaration %}
+      # Event.subscribe(:some_event_name, callback : Event::EventType)
       Event._subscribe {{event}},
         -> (e : BaseEvent) {
           if e.is_a? {{callback.type}}
@@ -60,6 +68,7 @@ module Event
           end
         }
     {% elsif callback.is_a? NamedTupleLiteral %}
+      # Event.subscribe(:some_event_name, { callback: Event::EventType })
       Event._subscribe {{event}},
         -> (e : BaseEvent) {
           {% for fn, type in callback %}
@@ -83,16 +92,19 @@ module Event
   # ```
   macro subscribe(callback)
     {% if callback.is_a? Call %}
+      # Event.subscrube(some_event_name)
       Event._subscribe :{{callback}},
         -> (e : BaseEvent) {
           {{callback}}
         }
     {% elsif callback.is_a? SymbolLiteral %}
+      # Event.subscrube(:some_event_name)
       Event._subscribe {{callback}},
         -> (e : BaseEvent) {
           {{callback.id}}
         }
     {% elsif callback.is_a? TypeDeclaration %}
+      # Event.subscrube(some_event_name : Event::SomeEventType)
       Event._subscribe :{{callback.var}},
         -> (e : BaseEvent) {
           if e.is_a? {{callback.type}}
@@ -100,14 +112,6 @@ module Event
           end
         }
     {% end %}
-  end
-
-  macro test(x)
-    {% p x %}
-    {% p x.var %}
-    {% p x.value %}
-    {% p x.type %}
-    {% p x.class_name %}
   end
 
   def _subscribe(event : Symbol, callback : EventCallback) : Int32
