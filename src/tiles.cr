@@ -2,38 +2,19 @@ create_tile :none,
   color : BLT::Color = 0,
   char : Char = ' '
 
-create_tile :grass_1,
-  color : BLT::Color = Terminal.rgba(120, 180, 10),
-  char : Char = '"'
+create_tiles :water,
+  [ '~', '≈', '=' ],
+  [
+    Terminal.rgba(40,  80, 200),
+    Terminal.rgba(80, 120, 220),
+    Terminal.rgba(10, 110, 200),
+    Terminal.rgba(30, 120, 180)
+  ]
 
-create_tile :grass_2,
-  color : BLT::Color = Terminal.rgba(10, 140, 10),
-  char : Char = '"'
-
-create_tile :grass_3,
-  color : BLT::Color = Terminal.rgba(90, 140, 70),
-  char : Char = '"'
-
-create_tile :grass_4,
-  color : BLT::Color = Terminal.rgba(120, 180, 10),
-  char : Char = '\''
-
-create_tile :grass_5,
-  color : BLT::Color = Terminal.rgba(10, 140, 10),
-  char : Char = '\''
-
-create_tile :grass_6,
-  color : BLT::Color = Terminal.rgba(90, 140, 70),
-  char : Char = '\''
-
-create_tile :grass_7,
-  color : BLT::Color = Terminal.rgba(120, 180, 10),
-  char : Char = '`'
-
-create_tile :grass_8,
-  color : BLT::Color = Terminal.rgba(10, 140, 10),
-  char : Char = '`'
-
-create_tile :grass_9,
-  color : BLT::Color = Terminal.rgba(90, 140, 70),
-  char : Char = '`'
+create_tiles :grass,
+  [ '"', '\'', '`' ],
+  [
+    Terminal.rgba(120, 180, 10),
+    Terminal.rgba(10, 140, 10),
+    Terminal.rgba(90, 140, 70)
+  ]
