@@ -238,10 +238,4 @@ module BLTHelper
   def color_from_rgba(r, g, b, a) : BLT::Color
     color_from_argb(a, r, g, b)
   end
-
-
-  def clear; BLT.clear end
-  def close; BLT.close end
-  def read; BLT.read end
-  def refresh; BLT.refresh end
 end

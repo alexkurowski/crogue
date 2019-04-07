@@ -26,6 +26,10 @@ module Terminal
     BLT.refresh
   end
 
+  def close
+    BLT.close
+  end
+
   def width
     BLT.state BLT::State::WIDTH
   end
@@ -50,6 +54,14 @@ module Terminal
     BLT.state BLT::TK::MOUSE_Y
   end
 
+  def input? : Bool
+    BLT.has_input?
+  end
+
+  def read
+    BLT.read
+  end
+
   def input : BLT::TK | Nil
     if BLT.has_input?
       BLT.read
@@ -71,6 +83,10 @@ module Terminal
     BLT.color @@default_foreground_color
     BLT.bkcolor @@default_background_color
     BLT.clear
+  end
+
+  def refresh
+    BLT.refresh
   end
 
   def put(x, y, c : Int32)
@@ -101,6 +117,14 @@ module Terminal
     BLT.color foreground
     BLT.bkcolor background
     BLT.put x, y, c.ord
+  end
+
+  def argb(a, r, g, b) : BLT::Color
+    color_from_argb a, r, g, b
+  end
+
+  def rgba(r, g, b, a = 255) : BLT::Color
+    color_from_argb a, r, g, b
   end
 
   def fg_color(name : String)

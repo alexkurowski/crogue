@@ -9,6 +9,8 @@ class Model
   end
 
   def start
+    @world.generate
+
     @ecs.register System::Keypress.new
 
     @ecs.spawn(

@@ -16,9 +16,11 @@ class Core
 
   def loop
     until @done
+      Terminal.frame_start
       @input.update
       @model.update
       @view.update
+      Terminal.frame_end
     end
   end
 
