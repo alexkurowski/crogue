@@ -1,7 +1,2 @@
-class Event::Entity < BaseEvent
-  getter \
-    entity : Int32
-
-  def initialize(@entity)
-  end
-end
+create_simple_event Entity,
+  entity : Int32

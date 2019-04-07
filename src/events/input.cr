@@ -1,7 +1,2 @@
-class Event::Input < BaseEvent
-  getter \
-    key : BLT::TK
-
-  def initialize(@key)
-  end
-end
+create_simple_event Input,
+  key : BLT::TK

@@ -3,6 +3,26 @@ end
 
 alias EventCallback = Proc(BaseEvent, Nil)
 
+# Create an event class with given *properties* assignable on initialization
+macro create_simple_event(class_name, *properties)
+  class Event::{{class_name}} < BaseEvent
+    getter {{
+      *properties.map do |property|
+        property
+      end
+    }}
+
+    def initialize(
+      {{
+        *properties.map do |property|
+          "@#{property.var}".id
+        end
+      }}
+    )
+    end
+  end
+end
+
 module Event
   extend self
 

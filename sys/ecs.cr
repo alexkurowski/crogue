@@ -9,6 +9,11 @@ alias Entity = Int32
 alias ComponentType = BaseComponent | Bool
 
 class Components < Hash(Symbol, ComponentType)
+  # Create a method that returns our component with a correct higher type,
+  # so we can do the following:
+  # `components.get_position`
+  # instead of long and convoluted manual casting:
+  # `components[:position].as(Component::Position)`
   macro register(class_name)
     {% id = class_name.symbolize.underscore.id %}
     class Components
@@ -17,6 +22,29 @@ class Components < Hash(Symbol, ComponentType)
       end
     end
   end
+end
+
+# Create a component class with given *properties* assignable on initialization.
+# Properties do expect default values to be present.
+macro create_simple_component(class_name, *properties)
+  class Component::{{class_name}} < BaseComponent
+    property {{
+      *properties.map do |property|
+        property
+      end
+    }}
+
+    def initialize(
+      {{
+        *properties.map do |property|
+          "@#{property.var} = #{property.value}".id
+        end
+      }}
+    )
+    end
+  end
+
+  Components.register({{class_name}})
 end
 
 class ECS
